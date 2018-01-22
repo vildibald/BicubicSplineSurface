@@ -1,31 +1,27 @@
 #pragma once
-#include <windows.h>
+//#include <windows.h>
 
 
 class StopWatch
 {
-    LARGE_INTEGER frequency_;        // ticks per second
-    LARGE_INTEGER t1_, t2_;           // ticks
 public:
-    StopWatch()
-    {
-        // get ticks per second
-        QueryPerformanceFrequency(&frequency_);
-    }
+    StopWatch() = default;
+    std::chrono::high_resolution_clock::time_point start_;
+    std::chrono::high_resolution_clock::time_point stop_;
 
     void Start()
     {
-        QueryPerformanceCounter(&t1_);
+        start_ = std::chrono::high_resolution_clock::now();
     }
 
     void Stop()
     {
-        QueryPerformanceCounter(&t2_);
+        stop_ = std::chrono::high_resolution_clock::now();
     }
 
-    double EllapsedTime()
+    long long EllapsedTime()
     {
-        return (t2_.QuadPart - t1_.QuadPart) * 1000.0
-               / frequency_.QuadPart;
+        const auto diff = stop_ - start_;
+        return std::chrono::duration_cast<std::chrono::microseconds>(diff).count();
     }
 };
