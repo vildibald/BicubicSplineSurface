@@ -8,8 +8,8 @@ ReducedAlgorithm::ReducedAlgorithm(const InterpolativeMathFunction f)
 {
 }
 
-Spline ReducedAlgorithm::Calculate(const KnotVector xVector,
-                                   const KnotVector yVector)
+Spline ReducedAlgorithm::Calculate(KnotVector xVector,
+                                   KnotVector yVector)
 {
     Spline spline{std::move(xVector), std::move(yVector)};
     Initialize(spline);
@@ -32,7 +32,7 @@ void ReducedAlgorithm::FillDx(Spline& spline)
     };
     auto parameterGetter = [&](size_t i, size_t j)
     {
-        return spline.Z(i, j);
+        return spline.Zt(i, j);
     };
     auto derivationGetter = [&](size_t i, size_t j)
     {
@@ -48,21 +48,21 @@ void ReducedAlgorithm::FillDx(Spline& spline)
 
 void ReducedAlgorithm::FillDy(Spline& spline)
 {
-    auto differenceGetter = [&](size_t i)
+    auto differenceGetter = [&](size_t j)
     {
-        return spline.Y(i);
+        return spline.Y(j);
     };
     auto parameterGetter = [&](size_t i, size_t j)
     {
-        return spline.Z(j, i);
+        return spline.Z(i, j);
     };
     auto derivationGetter = [&](size_t i, size_t j)
     {
-        return spline.Dy(j, i);
+        return spline.Dy(i, j);
     };
     auto derivationSetter = [&](size_t i, size_t j, double value)
     {
-        spline.SetDy(j, i, value);
+        spline.SetDy(i, j, value);
     };
     FillD(spline.RowsCount(), spline.ColumnsCount(), yTridiagonals_, differenceGetter, parameterGetter,
           derivationGetter, derivationSetter);
@@ -97,21 +97,21 @@ void ReducedAlgorithm::FillDxy(Spline& spline)
 
 void ReducedAlgorithm::FillDyx(Spline& spline)
 {
-    auto differenceGetter = [&](size_t i)
+    auto differenceGetter = [&](size_t j)
     {
-        return spline.Y(i);
+        return spline.Y(j);
     };
     auto parameterGetter = [&](size_t i, size_t j)
     {
-        return spline.Dx(j, i);
+        return spline.Dx(i, j);
     };
     auto derivationGetter = [&](size_t i, size_t j)
     {
-        return spline.Dxy(j, i);
+        return spline.Dxy(i, j);
     };
     auto derivationSetter = [&](size_t i, size_t j, double value)
     {
-        spline.SetDxy(j, i, value);
+        spline.SetDxy(i, j, value);
     };
     FillD(spline.RowsCount(), spline.ColumnsCount(), yTridiagonals_, differenceGetter, parameterGetter,
           derivationGetter, derivationSetter);

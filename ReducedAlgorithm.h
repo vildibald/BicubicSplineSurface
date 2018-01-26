@@ -15,10 +15,10 @@ class ReducedAlgorithm
     CalculationMode calculationMode_ = OPTIMIZED_DIVISIONS_BUFFERED;
 
 public:
-    ReducedAlgorithm(const InterpolativeMathFunction f);
+    ReducedAlgorithm(InterpolativeMathFunction f);
 
-    Spline Calculate(const KnotVector xVector,
-                     const KnotVector yVector);
+    Spline Calculate(KnotVector xVector,
+                     KnotVector yVector);
 
     double ExecutionTime();
 
@@ -30,7 +30,7 @@ public:
 
     CalculationMode GetCalculationMode() const;
 
-    void SetCalculationMode(const CalculationMode calculationMode);
+    void SetCalculationMode(CalculationMode calculationMode);
 
 private:
     void Initialize(Spline& values);

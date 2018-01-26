@@ -44,18 +44,23 @@ Spline::Spline()
 }
 
 Spline::Spline(KnotVector rowVector, KnotVector columnVector)
-        : z_(), dx_(), dy_(), dxy_(), x_(std::move(rowVector)), y_(std::move(columnVector))
+        : z_(),zt_(), dx_(), dy_(), dxy_(), x_(std::move(rowVector)), y_(std::move(columnVector))
 {
     z_.resize(x_.size());
-    dx_.resize(x_.size());
+    zt_.resize(y_.size());
+    dx_.resize(y_.size());
     dy_.resize(x_.size());
     dxy_.resize(x_.size());
 
     for (int i = 0; i < x_.size(); ++i) {
         z_[i].resize(y_.size());
-        dx_[i].resize(y_.size());
         dy_[i].resize(y_.size());
         dxy_[i].resize(y_.size());
+    }
+
+    for (int j = 0; j < y_.size(); ++j) {
+        zt_[j].resize(x_.size());
+        dx_[j].resize(x_.size());
     }
 }
 

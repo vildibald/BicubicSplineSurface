@@ -2,13 +2,14 @@
 
 #include "KnotVector.h"
 #include "KnotMatrix.h"
-
+#include "MathFunction.h"
 
 class InterpolativeMathFunction;
 
 class Spline
 {
     KnotMatrix z_;
+    KnotMatrix zt_;
     KnotMatrix dx_;
     KnotMatrix dy_;
     KnotMatrix dxy_;
@@ -38,6 +39,12 @@ public:
     {
         return z_;
     }
+
+    KnotMatrix Zt() const
+    {
+        return z_;
+    }
+
 
     KnotMatrix Dx() const
     {
@@ -79,6 +86,11 @@ public:
         return z_[i][j];
     }
 
+    double Zt(const size_t i, const size_t j) const
+    {
+        return z_[j][i];
+    }
+
     double Dx(const size_t i, const size_t j) const
     {
         return dx_[j][i];
@@ -97,6 +109,7 @@ public:
     void SetZ(const size_t i, const size_t j, const double value)
     {
         z_[i][j] = value;
+        zt_[j][i] = value;
     }
 
     void SetDx(const size_t i, const size_t j, const double value)
